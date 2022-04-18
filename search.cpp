@@ -31,12 +31,35 @@ main (int argc, char **argv) {
       case 'r':
         recursiveFlag = 1;
         printf ("Recursive search.\n");
+        if (fromFlag && directoryFlag) {}
+        else if (fromFlag) {
+          searchTerm = argv[1];
+        }
+        else {
+          searchTerm = argv[0];
+        }
+
         break;
       case 'd':
         directoryFlag = 1;
         printf ("Directory search.\n");
+        if (fromFlag && recursiveFlag) {}
+        else if (fromFlag) {
+          searchTerm = argv[1];
+        }
+        else {
+          searchTerm = argv[0];
+        }
         break;
-      case 'f'
+      case 'f':
+        fromFlag = 1;
+        if (recursiveFlag || directoryFlag) {
+          searchFrom = argv[1];
+        }
+        else {
+          searchFrom = argv[0];
+        }
+        break:
       case '?':
         if (isprint (optopt))
           fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -52,7 +75,7 @@ main (int argc, char **argv) {
   if ((recursiveFlag && directoryFlag) || recursiveFlag) {
     printf ("Too many flags! Defaulting to recursive.\n");
     if (fromFlag) {
-      system(("find " + searchFrom + " | grep %s" + serchTerm).c_str());
+      system(("find " + searchFrom + " | grep " + serchTerm).c_str());
     }
     else {
       system(("find | grep " + searchTerm).c_str());
